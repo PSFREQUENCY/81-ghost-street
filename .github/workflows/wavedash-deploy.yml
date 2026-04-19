@@ -1,0 +1,33 @@
+name: Deploy to Wavedash
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build and push to Wavedash
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build static export
+        env:
+          NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID }}
+          NEXT_PUBLIC_GHOSTKEY_ADDRESS: ${{ secrets.NEXT_PUBLIC_GHOSTKEY_ADDRESS }}
+          NEXT_PUBLIC_CHAIN_ID: '11155111'
+        run: npm run build
+      - name: Install Wavedash CLI
+        run: curl -sSL https://docs.wavedash.com/install.sh | bash
+      - name: Auth
+        run: wavedash auth login --token "$WAVEDASH_TOKEN"
+        env:
+          WAVEDASH_TOKEN: ${{ secrets.WAVEDASH_TOKEN }}
+      - name: Push build
+        run: wavedash build push

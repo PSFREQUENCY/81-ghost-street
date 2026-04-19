@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+.env
+.env.local
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+
+# contracts
+contracts/lib/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/.env
+
+# editor
+.idea/
+.vscode/
+
+# misc
+*.log
