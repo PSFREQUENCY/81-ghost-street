@@ -105,7 +105,11 @@ export function GameScene({ level }: Props) {
                 luminanceSmoothing={0.4}
                 mipmapBlur
               />
-              <ChromaticAberration offset={new THREE.Vector2(0.0008, 0.0008)} />
+              <ChromaticAberration
+                offset={new THREE.Vector2(0.0008, 0.0008)}
+                radialModulation={false}
+                modulationOffset={0}
+              />
               <Vignette eskil={false} offset={0.15} darkness={0.92} />
             </EffectComposer>
           </Suspense>
